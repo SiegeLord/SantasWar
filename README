@@ -1,0 +1,69 @@
+%%%%%%%%%%%%%%%%%%%%%
+
+     Santa's War
+    
+         by
+    
+      SiegeLord
+      
+         for
+         
+    SantaHack 2012
+
+%%%%%%%%%%%%%%%%%%%%%
+
+0. Table of Contents
+====================
+
+1. Goal of the Game
+2. Controls
+3. Playing the Game
+4. Building
+5. Resource Attributions
+
+1. Goal of the Game
+===================
+Snowball fight elves of the opposite color team to win!
+
+2. Controls
+===========
+Arrow Keys - Move your character
+Left/Right Ctrl - Construct a snowball
+Space - Prepare to launch a snowball (release to fire)
+Esc - Quit
+
+3. Playing the game
+===================
+
+First, pick a name (limited to 10 characters) by selecting the name menu item
+and typing a name.
+
+To host a game, first choose a level by selecting the level menu item and using
+the left/right arrow keys to select a level. Then, select the match duration
+by selecting the match duration menu item and using the left/right arrow keys to
+select the duration. After you are satisfied with the settings, select the host
+game menu item and hit enter.
+
+To join a game, select the join game menu item and type the address of the server
+you want to connect to. This can be an IP address or a hostname. Hit enter when
+you are done.
+
+By default Santa's War uses UDP port 1024 so make sure it is open. You can alter
+it by editing the options.cfg file.
+
+Edit the options.cfg file to enable fullscreen mode. 
+
+4. Building
+===========
+
+Use the provided Makefiles with a DMDFE 2.060 compiler. On 32 bit linux dmd works
+best, on 64 bit linux LDC2 works best. On Windows dmd works best. You'll also need
+Allegro5.1, DAllegro, TangoD2, enet, Denet and SLConfig.
+
+I suggest you use the binaries I provide.
+
+5. Resource Attributions
+========================
+
+8bitoperator_jve.ttf - http://www.dafont.com/8bitoperator-jve.font
+pzim3x5.ttf - http://www.dafont.com/pixelzim3x5.font
