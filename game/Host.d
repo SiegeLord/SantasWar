@@ -91,7 +91,7 @@ class CHost : CDisposable
 		ENetAddress address;
 		address.port = port;
 		
-		Stdout("Connecting to", hostname).nl;
+		//Stdout("Connecting to", hostname).nl;
 		auto ret = enet_address_set_host(&address, (hostname ~ "\0").ptr);
 		assert(ret == 0);
 		
@@ -122,7 +122,7 @@ class CHost : CDisposable
 					}
 					else
 					{
-						Stdout("Somebody connected").nl;
+						//Stdout("Somebody connected").nl;
 						auto channel = new CNetChannel(event.peer);
 						event.peer.data = cast(void*)(channel);
 						Peers ~= event.peer;
@@ -170,7 +170,7 @@ class CHost : CDisposable
 					
 					break;
 				case ENetEventType.ENET_EVENT_TYPE_DISCONNECT:
-					Stdout("Somebody disconnected...").nl;
+					//Stdout("Somebody disconnected...").nl;
 					if(event.peer.data !is null)
 					{
 						DisconnectionEvent.Trigger(cast(CNetChannel)event.peer.data);

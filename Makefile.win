@@ -1,15 +1,17 @@
 DC               = dmd
 GAME_NAME        = santas_war
 GAME_FILES       = $(wildcard game/*.d game/messages/*.d game/components/*.d game/systems/*.d)
-ALLEGRO_LD_FLAGS = dallegro5.lib allegro.lib allegro_font.lib allegro_image.lib allegro_primitives.lib allegro_ttf.lib
+ALLEGRO_LD_FLAGS = dallegro5.lib allegro.lib
 TANGO_LD_FLAGS   = tango-dmd.lib
-ALL_FILES        = $(GAME_FILES)
 ENET_LD_FLAGS    = enet.lib
-SLCONFIG_LD_FLAGS = slconfig-static.lib
+SLCONFIG_LD_FLAGS = slconfig.lib
+D_PATH = C:/dev/d
+ENET_FILES = $(wildcard $(D_PATH)/enet/*.d)
+ALL_FILES        = $(GAME_FILES) $(ENET_FILES) $(D_PATH)/slconfig.d
 
 LD_FLAGS         = $(ALLEGRO_LD_FLAGS) $(TANGO_LD_FLAGS) $(SLCONFIG_LD_FLAGS) $(ENET_LD_FLAGS)
 
-D_FLAGS          = -g -unittest -version=DebugDisposable -L/SUBSYSTEM:WINDOWS:4.0
+D_FLAGS          = -g -unittest -L/SUBSYSTEM:WINDOWS:4.0 -version=ALLEGRO_NO_PRAGMA_LIB
 
 # Compiles a D program
 # $1 - program name
