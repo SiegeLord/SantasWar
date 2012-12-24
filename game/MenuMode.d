@@ -5,6 +5,7 @@ import game.Mode;
 import game.Font;
 import game.IGame;
 import game.Bitmap;
+import game.MapList;
 
 import allegro5.allegro;
 import allegro5.allegro_font;
@@ -12,7 +13,6 @@ import allegro5.d_util;
 
 import tango.io.Stdout;
 import tango.math.Math;
-import Path = tango.io.Path;
 import tango.text.convert.Format;
 import Utf = tango.text.convert.Utf;
 
@@ -147,27 +147,13 @@ class CMenuMode : CMode
 		int MapIdx;
 	}
 	
-	struct SMap
-	{
-		const(char)[] Name;
-		const(char)[] File;
-	}
-	
 	this(IGame game)
 	{
 		super(game);
 		
 		Title = Game.BitmapManager.Load("bitmaps/title.png");
 		
-		foreach(info; Path.children("maps"))
-		{
-			auto cfg = SNode();
-			scope(exit) cfg.Destroy;
-			auto filename = info.path ~ info.name;
-			cfg.LoadNodes(filename);
-			auto name = cfg["name"].GetValue!(const(char)[])(info.name);
-			Maps ~= SMap(name, filename);
-		}
+		Maps = GetMaps();
 		
 		if(Maps.length == 0)
 			throw new Exception("No maps!");

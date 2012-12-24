@@ -12,7 +12,8 @@ enum EMode
 {
 	Game,
 	Menu,
-	Exit
+	Exit,
+	Dedicated
 }
 
 enum EGameType

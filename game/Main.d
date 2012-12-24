@@ -7,7 +7,10 @@ void main(char[][] args)
 {
 	al_run_allegro(
 	{
-		auto game = new CGame();
+		bool dedicated = false;
+		if(args.length > 1 && args[1] == "dedicated")
+			dedicated = true;
+		auto game = new CGame(dedicated);
 		scope(exit) game.Dispose();
 		game.Run();
 		

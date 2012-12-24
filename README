@@ -44,6 +44,9 @@ by selecting the match duration menu item and using the left/right arrow keys to
 select the duration. After you are satisfied with the settings, select the host
 game menu item and hit enter.
 
+You can also host a dedicated server (which will simply cycle through all the
+available maps) by running the game with 'dedicated' as the command line argument.
+
 To join a game, select the join game menu item and type the address of the server
 you want to connect to. This can be an IP address or a hostname. Hit enter when
 you are done.

@@ -13,6 +13,7 @@ import game.IGame;
 import game.Mode;
 import game.GameMode;
 import game.MenuMode;
+import game.DedicatedMode;
 import game.TileSheet;
 
 import enet.enet;
@@ -31,8 +32,10 @@ import slconfig;
 
 class CGame : CDisposable, IGame
 {
-	this()
-	{		
+	this(bool dedicated)
+	{
+		Dedicated = dedicated;
+		
 		al_init();
 		al_install_keyboard();
 		al_install_mouse();
@@ -44,7 +47,8 @@ class CGame : CDisposable, IGame
 		FontManager = new CFontManager;
 		ConfigManager = new CConfigManager;
 		Options = ConfigManager.Load("options.cfg");
-		Gfx = new CGfx(Options);
+		if(!Dedicated)
+			Gfx = new CGfx(Options);
 		TileSheet = new CTileSheet("tilesheets/tilesheet.cfg", ConfigManager, BitmapManager);
 		
 		PlayerName = Options.player_name.GetValue!(const(char)[])("");
@@ -55,7 +59,8 @@ class CGame : CDisposable, IGame
 		Queue = al_create_event_queue();
 		al_register_event_source(Queue, al_get_keyboard_event_source());
 		al_register_event_source(Queue, al_get_mouse_event_source());
-		al_register_event_source(Queue, al_get_display_event_source(Gfx.Display));
+		if(!Dedicated)
+			al_register_event_source(Queue, al_get_display_event_source(Gfx.Display));
 		
 		if(enet_initialize() != 0)
 		{
@@ -92,7 +97,8 @@ class CGame : CDisposable, IGame
 		
 		al_destroy_event_queue(Queue);
 		
-		Gfx.Dispose;
+		if(!Dedicated)
+			Gfx.Dispose;
 		ConfigManager.Dispose;
 		FontManager.Dispose;
 		BitmapManager.Dispose;
@@ -105,23 +111,22 @@ class CGame : CDisposable, IGame
 	void Run()
 	{
 		CMode mode;
-		EMode next_mode = EMode.Menu;
+		EMode next_mode = Dedicated ? EMode.Dedicated : EMode.Menu;
 		while(true)
 		{
 			scope(exit)
 				if(mode) mode.Dispose;
 			final switch(next_mode)
 			{
+				case EMode.Dedicated:
+					mode = new CDedicatedMode(this);
+					break;
 				case EMode.Game:
-				{
 					mode = new CGameMode(this);
 					break;
-				}
 				case EMode.Menu:
-				{
 					mode = new CMenuMode(this);
 					break;
-				}
 				case EMode.Exit:
 					mode = null;
 					goto exit;
@@ -184,9 +189,11 @@ protected:
 
 			//physics_alpha = accumulator / FixedDt;
 			
-			mode.Draw();
-			
-			Gfx.FlipDisplay();
+			if(!Dedicated)
+			{
+				mode.Draw();
+				Gfx.FlipDisplay();
+			}
 		}
 		assert(0);
 	}
@@ -207,4 +214,6 @@ protected:
 	ushort PortVal;
 	int MatchDurationVal;
 	const(char)[] MapVal;
+	
+	bool Dedicated;
 }

@@ -7,6 +7,7 @@ import game.Simulation;
 import game.IGame;
 import game.ObjectController;
 import game.GameObject;
+import game.UnorderedEvent;
 
 import game.messages.InputMessage;
 import game.messages.StateMessage;
@@ -37,6 +38,7 @@ class CServer : CDisposable
 		TeamCounts[] = 0;
 		TeamScores[] = 0;
 		MatchTime = Game.MatchDuration * 60;
+		MatchEndedEvent = new typeof(MatchEndedEvent);
 	}
 	
 	class CPlayer
@@ -149,7 +151,8 @@ class CServer : CDisposable
 	void Logic(float dt)
 	{
 		Simulation.Logic(dt);
-		MatchTime -= dt;
+		if(Players.length > 1)
+			MatchTime -= dt;
 		
 		if(MatchTime < 0)
 		{
@@ -161,6 +164,9 @@ class CServer : CDisposable
 					Resolution = EGameResolution.RedWins;
 				else if(TeamScores[1] > TeamScores[0])
 					Resolution = EGameResolution.BlueWins;
+				
+				if(Resolution != EGameResolution.NotDone)
+					MatchEndedEvent.Trigger();
 			}
 		}
 		
@@ -284,6 +290,7 @@ class CServer : CDisposable
 		}
 	}
 	
+	CUnorderedEvent!() MatchEndedEvent;
 protected:
 	EGameResolution Resolution = EGameResolution.NotDone;
 	CGameObject[] AddedObjects;
