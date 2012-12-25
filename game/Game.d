@@ -37,8 +37,11 @@ class CGame : CDisposable, IGame
 		Dedicated = dedicated;
 		
 		al_init();
-		al_install_keyboard();
-		al_install_mouse();
+		if(!Dedicated)
+		{
+			al_install_keyboard();
+			al_install_mouse();
+		}
 		al_init_font_addon();
 		al_init_ttf_addon();
 		al_init_image_addon();
@@ -57,10 +60,12 @@ class CGame : CDisposable, IGame
 		MatchDuration = Options.match_duration.GetValue!(int)(5);
 		
 		Queue = al_create_event_queue();
-		al_register_event_source(Queue, al_get_keyboard_event_source());
-		al_register_event_source(Queue, al_get_mouse_event_source());
 		if(!Dedicated)
+		{
+			al_register_event_source(Queue, al_get_keyboard_event_source());
+			al_register_event_source(Queue, al_get_mouse_event_source());
 			al_register_event_source(Queue, al_get_display_event_source(Gfx.Display));
+		}
 		
 		if(enet_initialize() != 0)
 		{
